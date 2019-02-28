@@ -1,0 +1,54 @@
+<!DOCTYPE >
+<html>
+<head>
+<meta charset="utf-8">
+<title>出错了</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+<style type="text/css">
+body {
+	line-height: 24px;
+	font: 14px Helvetica Neue, Helvetica, PingFang SC, Tahoma, Arial,
+		sans-serif;
+}
+
+.layadmin-tips {
+	margin-top: 30px;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.layui-icon {
+	display: inline-block;
+	font-size: 300px;
+	color: #393D49;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	text-align: center;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.layui-text {
+	width: 500px;
+	margin: 30px auto;
+	padding-top: 20px;
+	border-top: 5px solid #009688;
+	font-size: 16px
+}
+</style>
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layadmin-tips">
+			<i class="layui-icon" face>&#xe69c;</i>
+			<div class="layui-text" style="font-size: 20px;"><samp th:text="${errorCode}"></samp><samp th:text="${errorMessage}? ${errorMessage} : '好像出现错误啦!'"></samp></div>
+		</div>
+	</div>
+	<script src="/static/layui/layui.js"></script>
+</body>
+</html>
