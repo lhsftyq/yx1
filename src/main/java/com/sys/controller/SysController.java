@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.entity.ResultEntity;
 import com.sys.entity.SysUser;
 import com.sys.service.SysUserService;
 
@@ -41,11 +42,11 @@ public class SysController {
 	}
 
 	@GetMapping("/user/select")
-	public SysUser select() {
+	public ResultEntity select() {
 		logger.info("请求查询用户表数据");
 		SysUser sysUser = new SysUser();
 		sysUser.setUserId(1);
-		return sysUserService.sysUserSelect(sysUser);
+		return ResultEntity.resultEntity("0", null, sysUserService.sysUserSelect(sysUser));
 	}
 
 	@GetMapping("/user/update")

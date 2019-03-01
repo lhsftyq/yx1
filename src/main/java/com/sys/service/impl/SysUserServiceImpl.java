@@ -1,5 +1,7 @@
 package com.sys.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,7 +12,7 @@ import com.sys.entity.SysUser;
 import com.sys.service.SysUserService;
 
 @Service("sysUserService")
-public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> implements SysUserService{
+public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> implements SysUserService {
 
 	@Override
 	public int sysUserSave(SysUser sysUser) {
@@ -21,19 +23,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
 	@Override
 	public int sysUserDelete(SysUser sysUser) {
 		// TODO Auto-generated method stub
-		return baseMapper.delete(new QueryWrapper<SysUser>().eq("user_id",sysUser.getUserId()));
+		return baseMapper.delete(new QueryWrapper<SysUser>().eq("user_id", sysUser.getUserId()));
 	}
 
 	@Override
 	public int sysUserUpdate(SysUser sysUser) {
 		// TODO Auto-generated method stub
-		return baseMapper.update(sysUser, new UpdateWrapper<SysUser>().eq("user_id",sysUser.getUserId()));
+		return baseMapper.update(sysUser, new UpdateWrapper<SysUser>().eq("user_id", sysUser.getUserId()));
 	}
 
 	@Override
-	public SysUser sysUserSelect(SysUser sysUser) {
+	public List<SysUser> sysUserSelect(SysUser sysUser) {
 		// TODO Auto-generated method stub
-		return baseMapper.selectOne(new QueryWrapper<SysUser>().eq("user_id",sysUser.getUserId()));
+		return baseMapper.selectList(new QueryWrapper<SysUser>().notIn("user_id", 0));
 	}
 
 }
