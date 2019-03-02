@@ -1,4 +1,4 @@
-package com.entity;
+package com.sys.entity;
 
 public class Drole {
 

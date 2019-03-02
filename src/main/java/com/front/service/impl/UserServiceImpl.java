@@ -1,9 +1,10 @@
 package com.front.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.entity.User;
 import com.front.dao.UserMapper;
 import com.front.service.IUserService;
+import com.sys.entity.User;
+
 import org.springframework.stereotype.Service;
 
 /**

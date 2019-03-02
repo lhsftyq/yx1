@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 /**
  * @Title: SysUser.java
  * @Package com.sys.entity
- * @Description:  系统用户实体
+ * @Description: 系统用户实体
  * @author linghushaofei
  * @date 2019年2月28日 下午1:18:46
  * @version 1.0.0
@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  */
 @TableName("sys_user")
 public class SysUser {
-
+	 
 	@TableField("user_id")
 	private long userId;
 	@TableField("username")

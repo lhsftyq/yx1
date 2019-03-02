@@ -5,10 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.entity.ResultEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sys.entity.ResultEntity;
 import com.sys.entity.SysUser;
 import com.sys.service.SysUserService;
 
@@ -42,11 +45,12 @@ public class SysController {
 	}
 
 	@GetMapping("/user/select")
-	public ResultEntity select() {
-		logger.info("请求查询用户表数据");
+	public ResultEntity select(@RequestParam(name = "page") int page, @RequestParam(name = "limit") int limit) {
+		logger.info("请求查询用户表数据  入参{page:" + page + ",limit:" + limit + "}");
 		SysUser sysUser = new SysUser();
 		sysUser.setUserId(1);
-		return ResultEntity.resultEntity("0", null, sysUserService.sysUserSelect(sysUser));
+		IPage<SysUser> iPageS = sysUserService.sysUserSelect(new Page<SysUser>(page, limit), 1);
+		return ResultEntity.resultEntity("0", null, iPageS.getTotal(), iPageS.getRecords());
 	}
 
 	@GetMapping("/user/update")
