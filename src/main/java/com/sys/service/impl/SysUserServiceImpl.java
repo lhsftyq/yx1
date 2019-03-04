@@ -31,9 +31,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
 	}
 
 	@Override
-	public SysUser sysUserSelect(SysUser sysUser) {
+	public SysUser sysUserSelect(String username) throws Exception {
 		// TODO Auto-generated method stub
-		return baseMapper.selectOne(new QueryWrapper<SysUser>().eq("user_id",sysUser.getUserId()));
+		return baseMapper.selectOne(new QueryWrapper<SysUser>().eq("username",username));
 	}
 
 }

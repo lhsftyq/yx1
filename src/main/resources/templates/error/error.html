@@ -7,11 +7,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/layui/css/layui.css" media="all">
 <style type="text/css">
 body {
 	line-height: 24px;
-	font: 14px Helvetica Neue, Helvetica, PingFang SC, Tahoma, Arial,
+	font: 14px Helvetica Neue,	 Helvetica, PingFang SC, Tahoma, Arial,
 		sans-serif;
 }
 
@@ -45,10 +45,10 @@ body {
 <body>
 	<div class="layui-fluid">
 		<div class="layadmin-tips">
-			<i class="layui-icon" face>&#xe69c;</i>
+			<i class="layui-icon">&#xe69c;</i>
 			<div class="layui-text" style="font-size: 20px;"><samp th:text="${errorCode}"></samp><samp th:text="${errorMessage}? ${errorMessage} : '好像出现错误啦!'"></samp></div>
 		</div>
 	</div>
-	<script src="/static/layui/layui.js"></script>
+	<script src="/layui/layui.js"></script>
 </body>
 </html>

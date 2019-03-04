@@ -30,12 +30,12 @@ public class SysController {
 		return sysUserService.sysUserSave(sysUser);
 	}
 	
-	@GetMapping("/user/select")
-	public SysUser select() {
-		SysUser  sysUser  = new SysUser();
-		sysUser.setUserId(1);
-		return sysUserService.sysUserSelect(sysUser);
-	}
+//	@GetMapping("/user/select")
+//	public SysUser select() {
+//		SysUser  sysUser  = new SysUser();
+//		sysUser.setUserId(1);
+//		return sysUserService.sysUserSelect(sysUser);
+//	}
 	
 	@GetMapping("/user/update")
 	public int updateUser() {

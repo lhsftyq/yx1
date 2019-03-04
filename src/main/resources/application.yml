@@ -8,14 +8,14 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/work?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: 12345678
+    password: lhsftyq@1
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
     encoding: UTF-8
     mode: HTML5
-    
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔

@@ -61,12 +61,19 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>2.0.0</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring --> 
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.shiro</groupId> -->
-<!-- 			<artifactId>shiro-spring</artifactId> -->
-<!-- 			<version>1.4.0</version> -->
-<!-- 		</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.theborakompanioni/thymeleaf-extras-shiro -->
+		<dependency>
+			<groupId>com.github.theborakompanioni</groupId>
+			<artifactId>thymeleaf-extras-shiro</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

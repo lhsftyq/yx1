@@ -11,5 +11,5 @@ public interface SysUserService extends IService<SysUser> {
 
 	int sysUserUpdate(SysUser sysUser);
 
-	SysUser sysUserSelect(SysUser sysUser);
+	SysUser sysUserSelect(String username) throws Exception;
 }
