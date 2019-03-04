@@ -77,7 +77,7 @@ public class CustomRealm extends AuthorizingRealm {
 		sysUser.setUserName(username);
 		SysUser resultSysUser = null;
 		try {
-			resultSysUser = sysUserService.sysUserSelect(username);
+			resultSysUser = sysUserService.sysUserSelectOne(username);
 		} catch (Exception e) {
 			throw new UnknownAccountException("数据库异常,请联系管理员!");
 		}

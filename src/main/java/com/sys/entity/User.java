@@ -1,4 +1,4 @@
-package com.entity;
+package com.sys.entity;
 
 //import com.baomidou.ant.common.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;

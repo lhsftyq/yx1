@@ -1,4 +1,4 @@
-package com.entity;
+package com.sys.entity;
 
 //粗粒度角色表
 public class Role {
