@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>新增用户</title>
+<link rel="stylesheet" href="/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/css/eleTree.css" media="all">
+<style type="text/css">
+.xinhao {
+	color: red;
+}
+</style>
+</head>
+<body>
+	<div style="margin-top: 20px; margin-right: 1%;">
+		<form class="layui-form" action="">
+			<!--用户名称 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>用户名</label>
+				<div class="layui-input-block">
+					<input type="text" name="username" id="username" lay-verify="required"
+						autocomplete="off" placeholder="用户名" class="layui-input">
+				</div>
+			</div>
+			<!--姓名 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>姓名</label>
+				<div class="layui-input-block">
+					<input type="text" name="userNameId" id="userNameId" lay-verify="required"
+						autocomplete="off" placeholder="姓名" class="layui-input">
+				</div>
+			</div>
+			<!--所属部门 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>所属部门</label>
+				<div class="layui-input-block">
+					<input type="text" name="orgId" id="orgId" lay-verify="required"
+						autocomplete="off" placeholder="所属部门" class="layui-input">
+				</div>
+			</div>
+			<!--所属部门 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>职务</label>
+				<div class="layui-input-block">
+					<input type="text" name="post" id="post" lay-verify="required"
+						autocomplete="off" placeholder="职务" class="layui-input">
+				</div>
+			</div>
+			<!--密码 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>密码</label>
+				<div class="layui-input-block">
+					<input type="text" name="password" id="password" lay-verify="title"
+						placeholder="密码" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<!--确认密码 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>确认密码</label>
+				<div class="layui-input-block">
+					<input type="text" name="password1" lay-verify="title"
+						placeholder="确认密码" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"><samp class="xinhao">*</samp>状态</label>
+				<div class="layui-input-block">
+					<input type="radio" name="status" id="status" value="0" title="启用" checked="">
+					<input type="radio" name="status" id="status" value="1" title="禁用">
+				</div>
+			</div>
+
+			<!-- 角色配置 -->
+			<div style="height: 200px;">
+				<div style="width: 50%; float: left;">
+					<div class="layui-form-item">
+						<label class="layui-form-label">角色授权</label>
+						<div class="layui-input-inline">
+							<div class="eleTree ele1"  lay-filter="data1"></div>
+						</div>
+					</div>
+				</div>
+				<div style="width: 50%; float: left;">
+					<div class="layui-inline">
+						<label class="layui-form-label">数据授权</label>
+						<div class="layui-input-inline">
+							<div class="eleTree ele2" lay-filter="data2"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="*" >立即提交</button>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="/layui/layui.js"></script>
+	<script type="text/javascript">
+	layui.config({
+		base : "/layui/lay/modules/"
+	}).use([ 'jquery', 'eleTree', 'form', 'layer' ], function() {
+		var $ = layui.jquery;
+		var eleTree = layui.eleTree;
+		var form = layui.form;
+
+		var el2 = eleTree.render({
+			elem : '.ele1',
+			url : "/sys/getList",
+			emptText : "暂无数据",
+			showCheckbox : true
+		});
+
+		var el3 = eleTree.render({
+			elem : '.ele2',
+			url : "/sys/getList",
+			showCheckbox : true,
+			emptText : "暂无数据"
+		});
+
+		form.on('submit(*)', function(data) {
+			var check = el2.getChecked(true, false);
+			var check3 = el3.getChecked(true, false);
+			var checked = [];
+			var checked3 = [];
+			for (var i = 0; i < check.length; i++) {
+				checked[i] = check[i].id;
+			}
+
+			for (var i = 0; i < check3.length; i++) {
+				checked3[i] = check3[i].id;
+			}
+			alert($("#username").val());
+			$.post('/sys/user/register', {
+				userName : $("#username").val(),
+				userNameId : $("#userNameId").val(),
+				orgId : $("#orgId").val(),
+				post : $("#post").val(),
+				passWord : $("#password").val(),
+				status : $("#status").val(),
+				mdata : checked.join(","),
+				ddata : checked3.join(",")
+			}, function(data) {
+				if (data.code == "00") {
+					layer.msg('添加成功!', function() {
+						parent.layer.close(index);
+					});
+				} else {
+					layer.msg(data.message);
+				}
+			});
+			return false;
+		});
+
+	});
+	</script>
+</body>
+</html>

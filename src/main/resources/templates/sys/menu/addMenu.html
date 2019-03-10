@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>添加菜单</title>
+<link rel="stylesheet" href="/layui/css/layui.css">
+<link rel="stylesheet" href="/css/eleTree.css" media="all">
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div style="width: 80%;">
+		<form class="layui-form" action="/sys/permission/save" method="post">
+			<div style="padding-top: 30px;"></div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">类型</label>
+				<div class="layui-input-block">
+					<input type="radio" name="type" value="0" title="菜单" checked>
+					<input type="radio" name="type" value="1" title="按钮">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">名称</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" required lay-verify="required"
+						placeholder="请输入菜单/按钮名称" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">上级菜单</label>
+					<div class="layui-input-block">
+						<input type="text" name="pid_v" required="" value="一级菜单"
+							readonly="" autocomplete="off" class="layui-input">
+						<div class="eleTree ele5" lay-filter="data5"></div>
+						<input type="text" name="pid" style="display: none;" required=""
+							value="0" placeholder="一级菜单" readonly="" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">路由</label>
+				<div class="layui-input-block">
+					<input type="text" name="url" placeholder="请输入路由信息"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">排序</label>
+				<div class="layui-input-block">
+					<input type="text" name="orderNum" required lay-verify="required"
+						value="0" placeholder="请输入标题" autocomplete="off"
+						class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">授权标识</label>
+				<div class="layui-input-block">
+					<input type="text" name="perms" required lay-verify="required"
+						value="0" placeholder="多个用逗号分隔，如：sys:menu:save,sys:menu:update"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">图标</label>
+				<div class="layui-input-block">
+					<input type="text" name="icon" required lay-verify="required"
+						value="0" placeholder="图标" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="/layui/layui.js"></script>
+	<script>
+		layui.config({
+			base : "/layui/lay/modules/"
+		}).use([ 'jquery', 'eleTree', 'form', 'layer' ], function() {
+			var $ = layui.jquery;
+			var eleTree = layui.eleTree;
+			var form = layui.form;
+			var index = parent.layer.getFrameIndex(window.name);
+			var el5;
+			$("[name='pid_v']").on("click", function(e) {
+				e.stopPropagation();
+				if (!el5) {
+					el5 = eleTree.render({
+						elem : '.ele5',
+						url : "/sys/permission/list",
+						defaultExpandAll : false,
+						expandOnClickNode : false,
+						highlightCurrent : true
+					});
+				}
+				$(".ele5").toggle();
+			})
+
+			eleTree.on("nodeClick(data5)", function(d) {
+				$("[name='pid_v']").val(d.data.currentData.label)
+				$("[name='pid']").val(d.data.currentData.id)
+				$(".ele5").hide();
+			})
+
+			$(document).on("click", function() {
+				$(".ele5").hide();
+			})
+
+			form.on('submit(*)', function(data) {
+				//ajax 提交
+				$.post('/sys/permission/save', data.field, function(data) {
+					 if(data.code == "00"){
+						 layer.msg('添加成功!', function(){
+							 parent.layer.close(index);
+							});
+					 }else{
+						 layer.msg(data.message);
+					 }
+				});
+				return false;
+			});
+
+		});
+	</script>
+</body>
+</html>

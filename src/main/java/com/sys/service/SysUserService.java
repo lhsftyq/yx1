@@ -1,21 +1,21 @@
 package com.sys.service;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sys.entity.SysUser;
+import com.sys.entity.SysUserEntity;
 
-public interface SysUserService extends IService<SysUser> {
+public interface SysUserService extends IService<SysUserEntity> {
 	
-	int sysUserSave(SysUser sysUser);
+	int sysUserSave(SysUserEntity sysUser);
 
-	int sysUserDelete(SysUser sysUser);
+	int sysUserDelete(SysUserEntity sysUser);
 
-	int sysUserUpdate(SysUser sysUser);
+	int sysUserUpdate(SysUserEntity sysUser);
 
-	SysUser sysUserSelectOne(String username) throws Exception;
+	SysUserEntity sysUserSelectOne(String username) throws Exception;
 
-	IPage<SysUser> sysUserSelect(IPage<SysUser> sysUser , Integer state);
+	IPage<SysUserEntity> sysUserSelect(IPage<SysUserEntity> sysUser , Integer state);
+	
+	
 
 }

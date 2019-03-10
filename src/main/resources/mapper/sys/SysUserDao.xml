@@ -2,8 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sys.dao.SysUserDao">
 
-	<select id="selectPageVo" resultType="com.sys.entity.SysUser">
-		SELECT user_id,username,password,salt,email,mobile,status,dept_id,create_time FROM sys_user
+	<select id="selectPageVo" resultType="com.sys.entity.SysUserEntity">
+		SELECT
+		user_id,username,password,salt,email,mobile,status,dept_id,create_time
+		FROM sys_user
 	</select>
-
+	 
 </mapper>

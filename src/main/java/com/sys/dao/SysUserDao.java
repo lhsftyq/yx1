@@ -4,7 +4,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.sys.entity.SysUser;
+import com.sys.entity.SysRoleEntity;
+import com.sys.entity.SysUserEntity;
 
 /**
  * @Title: SysUser.java
@@ -18,7 +19,6 @@ import com.sys.entity.SysUser;
  */
 
 @Mapper
-public interface SysUserDao extends BaseMapper<SysUser> {
-
-	IPage<SysUser> selectPageVo(IPage<SysUser> page);
+public interface SysUserDao extends BaseMapper<SysUserEntity> {
+	IPage<SysUserEntity> selectPageVo(IPage<SysUserEntity> page);
 }

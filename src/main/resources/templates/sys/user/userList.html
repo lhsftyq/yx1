@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <title>用户管理界面</title>
-<link rel="stylesheet" href="/static/layui/css/layui.css">
+<link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <body>
-	<div id="md"></div>
-	<table class="layui-hide" id="table_data" lay-filter="table_data"></table>
-	<script type="text/html" id="toolbarDemo">
+<div id="md"></div>
+<table class="layui-hide" id="table_data" lay-filter="table_data"></table>
+<script type="text/html" id="heandTools" name="heandTools">
   <div class="layui-btn-container">
     <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe654;</i>添加</button>
     <button class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
@@ -29,16 +29,39 @@
     {{#  } }}
 </script>
 
-	<script src="/static/layui/layui.js"></script>
+	<script src="/layui/layui.js"></script>
 	<script>
-		layui.use(['jquery', 'table'],function() {
+		layui.use([ 'jquery', 'table' ], function() {
 			var table = layui.table;
 			var $ = layui.jquery;
-			//第一个实例
+			
+			//监听事件
+			table.on('toolbar(table_data)', function(obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+				case 'add':
+						parent.layer.open({
+							type : 2,
+							title : '新增用户',
+							content : '/sys/user/register',
+							area : [ '800px', '700px' ],
+							maxmin : true
+						});
+					break;
+				case 'delete':
+					layer.msg('删除');
+					break;
+				case 'update':
+					layer.msg('编辑');
+					break;
+				}
+				;
+			});
+			 
 			table.render({
 				elem : '#table_data',
 				url : '/sys/user/select',
-				toolbar : '#toolbarDemo',
+				toolbar : '#heandTools',
 				limit : 10,
 				page : true,
 				loading : true,
@@ -78,10 +101,7 @@
 					title : '创建时间',
 					sort : true
 				} ] ],
-				page : true,
-				done : function(res, curr, count) {
-					alert(res.id); 
-				}
+				page : true
 			});
 		});
 	</script>

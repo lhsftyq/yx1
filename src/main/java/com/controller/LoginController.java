@@ -12,8 +12,10 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sys.entity.SysRoleEntity;
+import com.sys.entity.SysUserEntity;
+import com.sys.service.SysRoleService;
 import com.utils.PictureCheckCode;
 
 @Controller
@@ -28,9 +36,14 @@ import com.utils.PictureCheckCode;
 public class LoginController {
 	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	@GetMapping("/index")//权限管理;
+	@Autowired
+	private SysRoleService sysRoleService;
+
+	@GetMapping("/index") // 权限管理;
 	public ModelAndView index(HttpServletRequest request, ModelAndView mav) {
-		logger.info("登录成功" + request.getRequestURI());
+		logger.info("登录成功");
+		// 根据用户权限 获取导航菜单
+
 		mav.setViewName("front/home/index");
 		return mav;
 	}
@@ -38,6 +51,8 @@ public class LoginController {
 	// 访问登录界面
 	@GetMapping("/login")
 	public ModelAndView login(HttpServletRequest request, ModelAndView mav) {
+//		IPage<SysRoleEntity> iPageS = sysRoleService.sysRoleSelect(new Page<SysRoleEntity>(1, 10), 1);
+//		logger.info(iPageS.getRecords().get(0).getRoleName());
 		logger.info("访问登录界面");
 		mav.setViewName("front/login/login");
 		return mav;
@@ -67,7 +82,7 @@ public class LoginController {
 			request.setAttribute("imageCode", null);
 			return "redirect:/front/login";
 		}
-		
+
 		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(request.getParameter("username"),
 				request.getParameter("password"));
 		Subject subject = SecurityUtils.getSubject();

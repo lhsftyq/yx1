@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 
 @EnableTransactionManagement
 @Configuration
-@MapperScan({ "com.sys.dao", "com.front.dao" })
+@MapperScan({ "com.sys.dao", "com.front.dao" ,"com.personnel.dao"})
 public class MybatisPlusConfig {
 
 	/**

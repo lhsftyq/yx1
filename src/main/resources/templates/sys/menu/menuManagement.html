@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>菜单管理</title>
+<link rel="stylesheet" href="/layui/css/layui.css">
+<link rel="stylesheet" href="/layer/mobile/need/layer.css">
+</head>
+<body>
+    <button class="layui-btn layui-btn-normal" id="addZy">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+	<table class="layui-table layui-form" id="tree-table"></table>
+	<script src="/layui/layui.js"></script>
+	<script type="text/javascript">
+	layui.config({
+		base : "/layui/lay/modules/"
+	}).use(['treeTable','layer','code','form','jquery'],function(){
+		    var o = layui.$,
+			form = layui.form,
+			layer = layui.layer,
+			treeTable = layui.treeTable;
+		    var  $ = layui.jquery;
+		
+		 $('#addZy').on('click', function(){
+			 parent.layer.open({
+					type : 2,
+					title : '新增资源',
+					content : '/sys/permission/addMenu',
+					area : [ '46%', '80%' ],
+					maxmin : true
+				});
+			  });
+		
+		
+		var	re = treeTable.render({
+			elem: '#tree-table',
+			url: "/sys/permission/getList",
+			icon_key: 'name',
+			end: function(e){
+				form.render();
+			},
+			cols: [
+				{
+					key: 'name',
+					title: '名称',
+					width: '100px',
+					template: function(item){
+							return '<span style="color: #606266;">'+item.name+'</span>';
+					}
+				},
+				{
+					title: 'type',
+					title: '类型',
+					width: '80px',
+					align: 'center',
+					template: function(item){
+						//菜单
+						if(item.type == 0){
+							return '<div style="border: 1px solid rgba(23,179,163,.2);margin:0 auto; width:50%;"><samp style="color:#17B3A3;">菜单</samp></div>';
+						}else{
+							return '<div style="border:1px solid #aaa;margin:0 auto; width:50%;"><samp style="color:#aaa;">按钮</samp></div>';
+						}
+					}
+				},
+				{
+					key: 'icon',
+					title: '图标',
+					width: '80px',
+					align: 'center',
+					template: function(item){
+						if(item.icon != null){
+							 return '<i class="layui-icon">'+item.icon+'</i>  ';
+						}
+						 return '';
+					}
+				},
+				{
+					key: 'id',
+					title: 'ID',
+					width: '100px',
+					align: 'center',
+				},
+				{
+					key: 'pid',
+					title: '父ID',
+					width: '100px',
+					align: 'center',
+				},
+				
+				{
+					key: 'url',
+					title: '路由',
+					width: '100px',
+					align: 'center'
+				},
+				{
+					key: 'perms',
+					title: '授权标识',
+					width: '100px',
+					align: 'center'
+				},
+				{
+					title: '操作',
+					align: 'center',
+					width: '150px',
+					template: function(item){
+						return '<button class="layui-btn layui-btn-danger"><i class="layui-icon"></i></button><button class="layui-btn layui-btn-danger"><i class="layui-icon"></i></button>';
+					}
+				}
+			]
+		});
+		
+	});
+	</script>
+</body>
+</html>

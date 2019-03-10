@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>新增角色</title>
+<link rel="stylesheet" href="/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/css/eleTree.css" media="all">
+<style type="text/css">
+.xinhao {
+	color: red;
+}
+</style>
+</head>
+<body>
+	<div style="margin-top: 20px; margin-right: 10%;">
+		<form class="layui-form" action="/sys/user/roleSave" method="get">
+			<!--用户名称 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色名称</label>
+				<div class="layui-input-block">
+					<input type="text" name="roleName" id="roleName" lay-verify="required"
+						autocomplete="off" placeholder="角色名称" class="layui-input">
+				</div>
+			</div>
+			<!--姓名 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色备注</label>
+				<div class="layui-input-block">
+					<input type="text" name="roleRemark" id="roleRemark" lay-verify="required"
+						autocomplete="off" placeholder="角色备注" class="layui-input">
+				</div>
+			</div>
+
+			<div style="height: 200px;">
+				<div style="width: 50%; float: left;">
+					<div class="layui-form-item">
+						<label class="layui-form-label">菜单授权</label>
+						<div class="layui-input-inline">
+							<div class="eleTree ele1"  lay-filter="data1"></div>
+						</div>
+					</div>
+				</div>
+				<div style="width: 50%; float: left;">
+					<div class="layui-inline">
+						<label class="layui-form-label">数据授权</label>
+						<div class="layui-input-inline">
+							<div class="eleTree ele2" lay-filter="data2"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block" style="padding-left: 20%;">
+					<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+					<!--<button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="/layui/layui.js"></script>
+	<script>
+		layui.config({
+			base : "/layui/lay/modules/"
+		}).use([ 'jquery', 'eleTree', 'form', 'layer' ], function() {
+			var $ = layui.jquery;
+			var eleTree = layui.eleTree;
+			var form = layui.form;
+
+			var el2 = eleTree.render({
+				elem : '.ele1',
+				url : "/sys/permission/list",
+				emptText : "暂无数据",
+				showCheckbox : true,
+				defaultExpandAll:true
+			});
+
+			var el3 = eleTree.render({
+				elem : '.ele2',
+				url : "/sys/permission/list",
+				showCheckbox : true,
+				defaultExpandAll:true,
+				emptText : "暂无数据"
+			});
+
+			form.on('submit(*)', function(data) {
+				var check = el2.getChecked(true, false);
+				var check3 = el3.getChecked(true, false);
+				var checked = [];
+				var checked3 = [];
+				for (var i = 0; i < check.length; i++) {
+					checked[i] = check[i].id;
+				}
+
+				for (var i = 0; i < check3.length; i++) {
+					checked3[i] = check3[i].id;
+				}
+			 
+				$.post('/sys/user/roleSave', {
+					roleName : $("#roleName").val(),
+					roleRemark : $("#roleRemark").val(),
+					mdata : checked.join(","),
+					ddata : checked3.join(",")
+				}, function(data) {
+					if (data.code == "00") {
+						layer.msg('添加成功!', function() {
+							parent.layer.close(index);
+						});
+					} else {
+						layer.msg(data.message);
+					}
+				});
+				return false;
+			});
+
+		});
+	</script>
+
+
+</body>
+</html>

@@ -2,12 +2,10 @@ package com.shiro;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
-
+import java.util.List;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -17,8 +15,12 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-
-import com.sys.entity.SysUser;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sys.entity.SysPermissionEntity;
+import com.sys.entity.SysRoleEntity;
+import com.sys.entity.SysUserEntity;
+import com.sys.service.SysPermissionService;
+import com.sys.service.SysRoleService;
 import com.sys.service.SysUserService;
 
 public class CustomRealm extends AuthorizingRealm {
@@ -26,56 +28,53 @@ public class CustomRealm extends AuthorizingRealm {
 	@Autowired
 	private SysUserService sysUserService;
 
+	@Autowired
+	private SysRoleService sysRoleService;
+
+	@Autowired
+	private SysPermissionService sysPermissionService;
+
 	// 设置权限
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		//获取前端输入的用户信息，封装为User对象
-//		SysUser userweb = (SysUser) principals.getPrimaryPrincipal();
-		
-		System.out.println("11111111111111111111111111");
-		
-        //获取前端输入的用户名
-//        String username = userweb.getUserName();
-        //根据前端输入的用户名查询数据库中对应的记录
-//        resultSysUser = sysUserService.sysUserSelect(username);
-        //如果数据库中有该用户名对应的记录，就进行授权操作
-//        if (user != null){
-//            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//            //因为addRoles和addStringPermissions方法需要的参数类型是Collection
-//            //所以先创建两个collection集合
-//            Collection<String> rolesCollection = new HashSet<String>();
-//            Collection<String> perStringCollection = new HashSet<String>();
-//            //获取user的Role的set集合
-//            Set<Role> roles = user.getRoles();
-//            //遍历集合
-//            for (Role role : roles){
-//                //将每一个role的name装进collection集合
-//                rolesCollection.add(role.getName());
-//                //获取每一个Role的permission的set集合
-//                Set<Permission> permissionSet =  role.getPermissions();
-//                //遍历集合
-//                for (Permission permission : permissionSet){
-//                    //将每一个permission的name装进collection集合
-//                    perStringCollection.add(permission.getName());
-//                }
-//                //为用户授权
-//                info.addStringPermissions(perStringCollection);
-//            }
-//            //为用户授予角色
-//            info.addRoles(rolesCollection);
-//            return info;
-//        }else{
-            return null;
-//        }
+		// 获取前端输入的用户信息，封装为User对象
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		SysUserEntity userweb = (SysUserEntity) principals.getPrimaryPrincipal();
+		List<SysRoleEntity> roles = sysRoleService.getBaseMapper().selectList(new QueryWrapper<SysRoleEntity>().apply(
+				"select e.* from  `sys_user_role` r inner join `sys_role` e on r.role_id = e.role_id  where r.user_id = "
+						+ userweb.getUserId() + ""));
+		if (userweb != null) {
+			Collection<String> rolesCollection = new HashSet<String>();
+			Collection<String> perStringCollection = new HashSet<String>();
+			// 遍历集合
+			for (SysRoleEntity role : roles) {
+				rolesCollection.add(role.getRoleName());
+			}
+
+			List<SysPermissionEntity> permissionSet = sysPermissionService.getBaseMapper()
+					.selectList(new QueryWrapper<SysPermissionEntity>().apply(
+							"select * from `sys_permission` u inner join (select k.menu_id from `sys_role_menu` k inner join ( select e.* from `sys_user_role` r inner join `sys_role` e on r.role_id ="
+									+ "e.role_id where r.user_id = " + userweb.getUserId()
+									+ " ) g on k.role_id = g.role_id group by k.menu_id) m on u.menu_id = m.menu_id"));
+			for (SysPermissionEntity permission : permissionSet) {
+				// 将每一个permission的name装进collection集合
+				perStringCollection.add(permission.getName());
+			}
+			// 为用户授予角色
+			info.addRoles(rolesCollection);
+			// 为用户授权
+			info.addStringPermissions(perStringCollection);
+		}
+		return info;
 	}
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		// 取得用户名
 		String username = (String) token.getPrincipal();
-		SysUser sysUser = new SysUser();
+		SysUserEntity sysUser = new SysUserEntity();
 		sysUser.setUserName(username);
-		SysUser resultSysUser = null;
+		SysUserEntity resultSysUser = null;
 		try {
 			resultSysUser = sysUserService.sysUserSelectOne(username);
 		} catch (Exception e) {
@@ -84,14 +83,14 @@ public class CustomRealm extends AuthorizingRealm {
 		if (ObjectUtils.isEmpty(resultSysUser)) {
 			throw new UnknownAccountException("该用户不存在!");
 		}
+		
+		if(resultSysUser.getStatus() == "2") {
+			throw new UnknownAccountException("该用户已禁用,请联系管理员!");
+		}
+		
 		ByteSource credentialsSalt = ByteSource.Util.bytes(resultSysUser.getSalt());
-		String password = new String((char[]) token.getCredentials());
-//		if (resultSysUser.getPassWord().equals(password)) {
-			AuthenticationInfo auth = new SimpleAuthenticationInfo(resultSysUser, password, credentialsSalt,
-					"CustomRealm");
-			return auth;
-//		} else {
-//			throw new IncorrectCredentialsException("密码错误！");
-//		}
+		AuthenticationInfo auth = new SimpleAuthenticationInfo(resultSysUser, resultSysUser.getPassWord(),
+				credentialsSalt, "myShiroRealm");
+		return auth;
 	}
 }

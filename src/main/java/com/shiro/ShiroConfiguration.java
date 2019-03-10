@@ -21,7 +21,7 @@ public class ShiroConfiguration {
 	@Bean
 	public CustomRealm myShiroRealm() {
 		CustomRealm myShiroRealm = new CustomRealm();
-		// myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+		myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
 		return myShiroRealm;
 	}
 
@@ -70,14 +70,14 @@ public class ShiroConfiguration {
 	}
 
 	// 凭证匹配器
-	// @Bean
-	// public HashedCredentialsMatcher hashedCredentialsMatcher() {
-	// HashedCredentialsMatcher hashedCredentialsMatcher = new
-	// HashedCredentialsMatcher();
-	// hashedCredentialsMatcher.setHashAlgorithmName("md5");
-	// hashedCredentialsMatcher.setHashIterations(2);
-	// return hashedCredentialsMatcher;
-	// }
+	@Bean
+	public HashedCredentialsMatcher hashedCredentialsMatcher() {
+		HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+		hashedCredentialsMatcher.setHashAlgorithmName("md5");
+		hashedCredentialsMatcher.setHashIterations(2);
+		return hashedCredentialsMatcher;
+	}
+
 	@Bean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();

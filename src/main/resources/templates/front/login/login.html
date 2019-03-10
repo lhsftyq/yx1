@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>登入 </title>
+<title>登入</title>
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport"
@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/layui/css/admin.css" media="all">
 <link rel="stylesheet" href="/layui/css/login.css" media="all">
 </head>
-<body> 
+<body>
 	<div class="layadmin-user-login layadmin-user-display-show"
 		id="LAY-user-login" style="display: none;">
 
@@ -67,7 +67,7 @@
 							lay-filter="LAY-user-login-submit">登 入</button>
 					</div>
 					<div class="layui-trans layui-form-item layadmin-user-login-other">
-						          <a href="reg.html" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
+						<a href="reg.html" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
 					</div>
 				</div>
 			</form>
@@ -82,8 +82,12 @@
 				layer.msg(JSON.stringify(data.field));
 				return false;
 			});
+			
+			//判断一下当前是不是做顶层，如果不是，则做一下顶层页面重定向
+			if (window != top) {
+				top.location.href = location.href;
+			}
 		});
-		 
 	</script>
 </body>
 </html>

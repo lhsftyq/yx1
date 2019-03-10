@@ -1,65 +1,57 @@
 package com.sys.service.impl;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.front.dao.UserMapper;
 import com.sys.dao.SysUserDao;
-import com.sys.entity.SysUser;
+import com.sys.entity.SysUserEntity;
 import com.sys.service.SysUserService;
 
 @Service("sysUserService")
-public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
 
 	@Autowired
 	private SysUserDao sysUserDao;
 
 	@Override
 	@Transactional
-	public int sysUserSave(SysUser sysUser) {
+	public int sysUserSave(SysUserEntity sysUser) {
 		// TODO Auto-generated method stub
 		return sysUserDao.insert(sysUser);
 	}
 
 	@Override
 	@Transactional
-	public int sysUserDelete(SysUser sysUser) {
+	public int sysUserDelete(SysUserEntity sysUser) {
 		// TODO Auto-generated method stub
-		return sysUserDao.delete(new QueryWrapper<SysUser>().eq("user_id", sysUser.getUserId()));
+		return sysUserDao.delete(new QueryWrapper<SysUserEntity>().eq("user_id", sysUser.getUserId()));
 	}
 
 	@Override
 	@Transactional
-	public int sysUserUpdate(SysUser sysUser) {
+	public int sysUserUpdate(SysUserEntity sysUser) {
 		// TODO Auto-generated method stub
-		return sysUserDao.update(sysUser, new UpdateWrapper<SysUser>().eq("user_id", sysUser.getUserId()));
+		return sysUserDao.update(sysUser, new UpdateWrapper<SysUserEntity>().eq("user_id", sysUser.getUserId()));
 	}
 
 	@Override
-	public IPage<SysUser> sysUserSelect(IPage<SysUser> sysUser, Integer state) {
-		IPage<SysUser> result = null;
+	public IPage<SysUserEntity> sysUserSelect(IPage<SysUserEntity> sysUser, Integer state) {
+		IPage<SysUserEntity> result = null;
 		try {
 			result = sysUserDao.selectPageVo(sysUser);
 		} catch (Exception e) {
 		}
-
 		return result;
-
 	}
 
 	@Override
-	public SysUser sysUserSelectOne(String username) throws Exception {
+	public SysUserEntity sysUserSelectOne(String username) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sysUserDao.selectOne(new QueryWrapper<SysUserEntity>().eq("username", username));
 	}
 
 }
